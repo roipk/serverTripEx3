@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+
+        var phot_alb_id;
+
+        $(document).ready(function () {
+
+          $.ajax({
+              url: "/shuruturu", success: function (result) {
+
+                  Object.keys(result).forEach(element =>{
+                      console.log(result)
+                      var newAlbum = document.createElement("div");
+                      var txt = document.createElement("h3");
+                      // txt.innerHTML = "Id: " + element;
+                      // newAlbum.appendChild(txt);
+
+
+                      txt = document.createElement("h1");
+                      txt.innerHTML = "כאן יוצג שם המדינה"//result[element]["name"];
+                      $(txt).css("text-align","center");
+                      newAlbum.appendChild(txt);
+
+
+                      txt = document.createElement("h2");
+                      txt.innerHTML = "כאן יוצג משך זמן הטיול בימים"//result[element]["type"];
+                      $(txt).css("text-align","center");
+                      newAlbum.appendChild(txt);
+
+
+                      var btnDiv = document.createElement("div");
+                      $(btnDiv).css("text-align", "center");
+                      var btn = document.createElement("button");
+                      btn.innerHTML = "הצג טיול";
+                      $(btn).css("height","90px");
+                      $(btn).css("width","140px");
+                                                        //Show photos album
+                      $(btn).click(function(){
+                          this.disabled = true;
+
+                          // Object.keys(result[element].pictures).forEach(pic =>{
+                          //
+                          //     var picDiv = document.createElement("div");
+                          //     $(picDiv).css("text-align","center");
+                          //     picDiv.style.display = "inline-block";
+                          //     $(picDiv).css("width","400px");
+                          //     picDiv.style.margin = "20px";
+                          //     picDiv.style.border = "thick solid #FFF"
+                          //
+                          //
+                          //     var picInfo = document.createElement("H2");
+                          //     picInfo.innerHTML = result[element].pictures[pic].name;
+                          //     picDiv.appendChild(picInfo);
+                          //
+                          //     picInfo = document.createElement("H3");
+                          //     picInfo.innerHTML = "by: " + result[element].pictures[pic].photographer;
+                          //     picDiv.appendChild(picInfo);
+                          //
+                          //     picInfo = document.createElement("IMG");
+                          //     picInfo.src = result[element].pictures[pic].link;
+                          //     $(picInfo).css("height","150px");
+                          //     $(picInfo).css("height","150px");
+                          //     picDiv.appendChild(picInfo);
+                          //
+                          //     newAlbum.appendChild(picDiv);
+                          // });
+                      });
+
+                      btnDiv.appendChild(btn);
+
+
+                      btn = document.createElement("button");
+                      btn.innerHTML = "הוסף מסלול";
+                      $(btn).css("height","90px");
+                      $(btn).css("width","140px");
+                                                        //Add photo to an album button
+                      // $(btn).click(function(){
+                      //     phot_alb_id = element;
+                      //     closeAlbumForm();
+                      //     document.getElementById("photTitle").innerHTML = "Add a photo to album's id " + element;
+                      //     document.getElementById("Photo_overlay").style.display = "block";
+                      //
+                      // });
+
+                      btnDiv.appendChild(btn);
+
+
+                      btn = document.createElement("button");
+                      btn.innerHTML = "הסר טיול";
+                      $(btn).css("height","90px");
+                      $(btn).css("width","140px");
+                                                        //Delete album button
+                      // $(btn).click(function(){
+                      //
+                      //     if (!confirm('Are you sure you want to delete this album?'))
+                      //         return;
+                      //
+                      //     url = "albums/"+element;
+                      //     $.ajax({
+                      //         url: url,
+                      //         type: "DELETE",
+                      //         success: function (result) {
+                      //             console.log("The album was deleted");
+                      //             location.reload();
+                      //         },
+                      //         error: function (err) {
+                      //             console.log("err", err);
+                      //         }
+                      //     });
+                      // });
+
+                      btnDiv.appendChild(btn);
+
+
+                      btn = document.createElement("button");
+                      btn.innerHTML = "עריכת מדריך לטיול";
+                      $(btn).css("height","90px");
+                      $(btn).css("width","140px");
+                      //Delete album button
+                      // $(btn).click(function(){
+                      //
+                      //     if (!confirm('Are you sure you want to delete this album?'))
+                      //         return;
+                      //
+                      //     url = "albums/"+element;
+                      //     $.ajax({
+                      //         url: url,
+                      //         type: "DELETE",
+                      //         success: function (result) {
+                      //             console.log("The album was deleted");
+                      //             location.reload();
+                      //         },
+                      //         error: function (err) {
+                      //             console.log("err", err);
+                      //         }
+                      //     });
+                      // });
+
+                      btnDiv.appendChild(btn);
+
+
+
+                      $(newAlbum).css("background-color","Lightgray");
+                      newAlbum.appendChild(btnDiv);
+                      document.getElementById("body").appendChild(newAlbum);
+                  });
+
+              },
+              error: function (err) {
+                  console.log("err", err);
+                }
+          });
+        });
+
+
+
+        function submitAlbum(){
+
+            var albName = document.getElementById("new_album_name");
+            if(albName.value === ""){
+                alert("Please fill the album's name");
+                return;
+            }
+
+            var newAlb = {
+                "name" : albName.value,
+                "type": document.getElementById("albumTypeId").value,
+                "pictures": {}
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/albums',
+                data: JSON.stringify(newAlb),
+                contentType: "application/json",
+                processData: false,
+                encode: true,
+                success: function (response) {
+                    alert("The album was created");
+                    albName.value = "";
+                    location.reload();
+                },
+                error: function (err) {
+                    console.log("err", err);
+                }
+            });
+        }
+
+        function submitPhoto(){
+
+            var phot_name = document.getElementById("photoName");
+            var phot_taker = document.getElementById("taker");
+            var linker = document.getElementById("link");
+
+            if(phot_name.value === "" || phot_taker === "" || linker === ""){
+                alert("Some fields are empty");
+                return;
+            }
+
+            var newPhoto = {
+                "name": phot_name.value,
+                "link": linker.value,
+                "photographer": phot_taker.value
+            }
+
+            var phot_url = 'albums/' + phot_alb_id;
+            $.ajax({
+                type: 'PUT',
+                url: phot_url,
+                data: JSON.stringify(newPhoto),
+                contentType: "application/json",
+                processData: false,
+                encode: true,
+                success: function (result) {
+                    alert("The photo was added");
+                    phot_name.value = "";
+                    linker.value = "";
+                    phot_taker.value = "";
+                    location.reload();
+                },
+                error: function (err) {
+                    console.log("err", err);
+                }
+            });
+        }
+
+        function createAlbum(){
+            document.getElementById("albumForm").style.display = "block";
+            closePhotoForm();
+        }
+        function closeAlbumForm(){
+            document.getElementById("albumForm").style.display = "none";
+            document.getElementById("new_album_name").value = "";
+        }
+        function closePhotoForm(){
+            document.getElementById("Photo_overlay").style.display = "none";
+            document.getElementById("photoName").value = "";
+            document.getElementById("taker").value = "";
+            document.getElementById("link").value = "";
+        }
+
+
+  </script>
+</head>
+
+<body>
+    <div id = "body" style = "position: relative; width: 1000px; left: 200px;top: 50px; padding-bottom: 80px;">
+        <div id="div1" style = "text-align: center">
+            <h1>הטיולים שלי</h1>
+        </div>
+    </div>
+
+    <div id style = "position: relative; width: 1000px;left: 200px; text-align: center">
+
+        <button style = "position: relative;width:150px; height: 100px; font-size: 25px;margin-bottom: 20px;"   onclick="createAlbum()">
+           הוסף טיול חדש
+        </button>
+
+
+        <div id="albumForm" style = " position: fixed; top: 50%; left: 50%;
+         font-size: 20px;width:40%; background-color: azure;transform: translate(-50%,-50%); display: none">
+
+            <form display=none>
+                <h2>Make a new album</h2>
+                <div>
+                    <label aria-label="name" >Name:</label>
+                    <input type="text" name="name" id = "new_album_name" placeholder="Album's name" required>   <br><br>
+                </div>
+
+                <div>
+                    <label aria-label="Type">Type:</label>
+                    <select id="albumTypeId" name="Type">
+                        <option value="people" required>people</option>
+                        <option value="nature" required>nature</option>
+                    </select>
+                </div>
+
+                <h3 onclick = submitAlbum()>Submit</h3>
+                <h3 onclick = closeAlbumForm()>Close</h3>
+            </form>
+        </div>
+
+
+
+
+        <div id="Photo_overlay" style = "position: fixed; top: 50%; left: 50%;
+          width:40%; background-color: azure;transform: translate(-50%,-50%); display: none;font-size:20px">
+
+            <form id = "addPhotoForm">
+                <h3 id = "photTitle"></h3>
+
+                <label aria-label="Photo_name"><b>Photo's name: </b></label>
+                <input type="text" placeholder="Photo's name" name="Photo_name" id = "photoName" required><br><br>
+
+                <label aria-label="Photo_taker"><b>Photograpther's name: </b></label>
+                <input type="text" placeholder="Photograpther's name" name="Photo_taker" id = "taker" required><br><br>
+
+                <label aria-label="Photo_link"><b>Photo's link: </b></label>
+                <input type="url" placeholder="Link for the photo" name="Photo_link" id = "link" required><br><br>
+
+                <h3 onclick = "submitPhoto()">Add a new photo</h3>
+                <h3 onclick="closePhotoForm()">Close</h3>
+            </form>
+        </div>
+
+    </div>
+
+
+
+
+</body>
+
+</html>

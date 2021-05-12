@@ -1,0 +1,38 @@
+{
+  "1": {
+    "name": "People, Jerusalem streets",
+    "type": "people",
+    "pictures": {
+      "PIC123": {
+        "name": "Prayer, the Kotel H'amarvi",
+        "link": "https://storage.googleapis.com/bhs-flat-pics/1AA26EC2-27E3-46AD-8A91-A4D42729172E.jpg",
+        "photographer": "Alamy Stock",
+        "id": "PIC123"
+      },
+      "PIC456": {
+        "name": "Girls in the old city",
+        "link": "https://static.timesofisrael.com/www/uploads/2017/06/IMG_20170625_081111-e1498503836509-640x400.jpg",
+        "photographer": "Yona Levi",
+        "id": "PIC456"
+      }
+    }
+  },
+  "2": {
+    "name": "Desert",
+    "type": "nature",
+    "pictures": {
+      "PIC777": {
+        "name": "Negev",
+        "link": "external or internal link",
+        "photographer": "Vered Mizrachi",
+        "id": "PIC777"
+      },
+      "PIC888": {
+        "name": "Sand everywhere",
+        "link": "external or internal link",
+        "photographer": "Yona Levi",
+        "id": "PIC888"
+      }
+    }
+  }
+}
